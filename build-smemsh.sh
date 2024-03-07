@@ -23,7 +23,8 @@ meson configure \
 	-D zstd=true \
 	-D brotli=true \
 	-D python=true \
-	-D libevent=true \
+	-D libevent=false \
+	-D libev=false \
 	-D no-root=true \
 build || bomb configure
 
