@@ -3,6 +3,30 @@
 set -x
 bomb () { echo "meson $@ failed" >&2; false; exit; }
 
+### libcss ###
+
+# mkdir -p netsurf
+# cd netsurf
+# git clone git://git.netsurf-browser.org/netsurf.git
+#
+test -d netsurf/netsurf || bomb "checkout netsurf to netsurf/netsurf"
+
+# mkdir -p netsurf/nsbuild
+# export TARGET_WORKSPACE=$PWD/netsurf/nsbuild
+# source netsurf/netsurf/docs/env.sh
+# ns-clone
+#
+test -d netsurf/nsbuild || bomb "no nsbuild dir, run ns-clone"
+export TARGET_WORKSPACE=$PWD/netsurf/nsbuild
+source netsurf/netsurf/docs/env.sh
+ns-pull-install
+
+echo sudo cp -r netsurf/nsbuild/inst-x86_64-linux-gnu/* /usr/local/
+read -n1 -p 'waiting for key to continue when done...'
+echo
+
+### elinks ###
+
 test -d build && rm -rf build
 meson setup build || bomb build
 
