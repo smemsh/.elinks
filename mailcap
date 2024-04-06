@@ -1,0 +1,132 @@
+#
+# flags
+# - copiousoutput: intended as a filter
+# - needsterminal: interactive and needs actual tty/pty
+# - (noflags): possibly interactive, does its own user-i/o
+#
+# command fields: shell commands, get percent-escapes
+# - (unmamed): in-band view
+# - print: invoke out-of-band print method
+# - composetyped: as 'compose' but output wrapped in mime header
+# - compose: make new message of given type, raw of that type
+# - test: if specified, must succeed for entry to match
+#
+# percent escapes
+# - %s temporary filename (if unspecified, stdin)
+# - %t content-type, eg: %t -> text/plain
+# - %{content-parameter} eg: %{format} -> flowed, or nothing if no such
+# - %n number of multiparts
+# - %F for multiparts, expands to type-tmpfile pairs
+#
+# additional fields
+# - notes=string: probably nobody using, good thing for library
+# - textualnewlines=0|1: for type text/*, convert crlfs to lf?
+#
+# todo
+# - copiousoutput+needsterminal?
+# - how does this integrate with xdg-open?
+# - install/use real metamail
+# - refactor, especially where have same entry one with/without flag
+# - when does elinks use this and when use its own?
+# - lots of other expansion characters may be useful, see man page
+# - list escapes here
+# - list flags here
+# - list var=value
+# - lint program and/or dump config to verify syntax errors
+# - maybe make for each entry standalone last-line of semicolon?
+# - upstream: man page: fields, flags, semicolons, other programs use
+# - are the tabs/newlines part of the arg vector when executing?
+# - what uses print=, can we maybe use this for something or overload?
+# - wrap: tests are ugly, maybe use wrapper
+# - wrap: high level format for this? wrap with m4 and generate?
+# - wrap: often read at startup only, use shell wrappers to make dynamic
+# - wrap: generic shell wrapper
+# - wrap: are there other wrappers
+# - wrap: maybe same as print/dump values program
+# - wrap: replace xdg-foo, get rid of evil dbus
+#
+##############################################################################
+
+# todo: incorporate gui somehow
+# todo: figure out when this should be the default
+# todo: appropriate flags to chrome
+#text/html; \
+#	chrome %s; \
+#	test=test -n "$DISPLAY";
+
+# todo: why is ldlibpath needed ?
+# todo: make chooser and/or elinks facility to spawn gui with same url
+# todo: does this work if there is no argument?
+#
+text/html; \
+	LD_LIBRARY_PATH=/usr/local/lib \
+	elinks %s; \
+	test=/bin/true; \
+	needsterminal;
+
+# todo: eliminate test line but what about semicolon?
+# todo: use wrapper, these flags and use as a filter is otherwise useful
+#
+text/html; \
+	LD_LIBRARY_PATH=/usr/local/lib \
+	elinks \
+		-no-connect \
+		-touch-files 0 \
+		-no-home \
+		-no-numbering \
+		-no-references \
+		-dump \
+		-dump-color-mode 0 \
+		-eval 'set document.browse.margin_width=0' %s; \
+	test=/bin/true; \
+	copiousoutput;
+
+application/msword; \
+	ooffice %s; \
+	test=test -n "$DISPLAY";
+
+application/msword; \
+	antiword -fw 60 %s; \
+	test=test -z "$DISPLAY"; \
+	copiousoutput;
+
+# warning: this has been known to crash
+application/vnd.ms-excel; \
+	excel2text %s; \
+	test=test -z "$DiSPLAY"; \
+	copiousoutput;
+
+image/*; \
+	NO_AT_BRIDGE=1 \
+	pqiv -tf %s; \
+	test=test -n "$DISPLAY";
+
+image/*; \
+	fbi -a --edit %s; \
+	test=test -z "$DISPLAY"; \
+	needsterminal;
+
+application/pdf; \
+	acroread %s; \
+	test=test -n "$DISPLAY";
+
+application/pdf; \
+	fbgs -a %s; \
+	test=test -z "$DISPLAY"; \
+	needsterminal;
+
+application/postscript; \
+	fbgs -a %s; \
+	test=test -z "$DISPLAY"; \
+	needsterminal;
+
+application/smil; \
+	realplay %s; \
+	test=test -n "$DISPLAY";
+
+video/*; \
+	mplayer %s; \
+	needsterminal;
+
+audio/*; \
+	mplayer %s;
