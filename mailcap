@@ -98,7 +98,7 @@ application/vnd.ms-excel; \
 
 image/*; \
 	NO_AT_BRIDGE=1 \
-	pqiv -tf %s; \
+	pqiv %s; \
 	test=test -n "$DISPLAY";
 
 image/*; \
