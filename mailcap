@@ -121,10 +121,6 @@ application/postscript; \
 	test=test -z "$DISPLAY"; \
 	needsterminal;
 
-application/smil; \
-	realplay %s; \
-	test=test -n "$DISPLAY";
-
 video/*; \
 	mplayer %s; \
 	needsterminal;
