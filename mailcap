@@ -96,9 +96,12 @@ application/vnd.ms-excel; \
 	test=test -z "$DiSPLAY"; \
 	copiousoutput;
 
+# note: we execute this in its own session, otherwise if we suspend the parent
+# (elinks) it also gets suspended (todo: why?)
+#
 image/*; \
 	NO_AT_BRIDGE=1 \
-	pqiv %s; \
+	setsid pqiv %s; \
 	test=test -n "$DISPLAY";
 
 image/*; \
