@@ -91,7 +91,7 @@ application/msword; \
 # warning: this has been known to crash
 application/vnd.ms-excel; \
 	excel2text %s; \
-	test=test -z "$DiSPLAY"; \
+	test=test -z "$DISPLAY"; \
 	copiousoutput;
 
 # note: we execute this in its own session, otherwise if we suspend the parent
