@@ -108,7 +108,7 @@ image/*; \
 	needsterminal;
 
 application/pdf; \
-	acroread %s; \
+	xpdf -z width -fullscreen %s; \
 	test=test -n "$DISPLAY";
 
 application/pdf; \
