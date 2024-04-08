@@ -54,12 +54,10 @@
 #	chrome %s; \
 #	test=test -n "$DISPLAY";
 
-# todo: why is ldlibpath needed ?
 # todo: make chooser and/or elinks facility to spawn gui with same url
 # todo: does this work if there is no argument?
 #
 text/html; \
-	LD_LIBRARY_PATH=/usr/local/lib \
 	elinks %s; \
 	test=/bin/true; \
 	needsterminal;
