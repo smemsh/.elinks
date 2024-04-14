@@ -53,7 +53,7 @@ meson configure \
 	-D test-mailcap=true \
 build || bomb configure
 
-cd build && ninja && cd - || bomb ninja
+ninja -C build || bomb ninja
 
 echo "completed."
 echo "to install: sudo ninja -C build install"
