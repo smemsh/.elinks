@@ -50,9 +50,11 @@ meson configure \
 	-D libevent=false \
 	-D libev=false \
 	-D no-root=true \
+	-D test-mailcap=true \
 build || bomb configure
 
 cd build && ninja && cd - || bomb ninja
 
 echo "completed."
 echo "to install: sudo ninja -C build install"
+echo "then: sudo cp build/src/mime/backend/mailcap-cache /usr/local/bin/"
