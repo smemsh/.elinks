@@ -21,7 +21,7 @@ export TARGET_WORKSPACE=$PWD/netsurf/nsbuild
 source netsurf/netsurf/docs/env.sh
 ns-pull-install
 
-echo sudo cp -r netsurf/nsbuild/inst-x86_64-linux-gnu/* /usr/local/
+echo sudo cp -uvr netsurf/nsbuild/inst-x86_64-linux-gnu/* /usr/local/
 read -n1 -p 'waiting for key to continue when done...'
 echo
 
