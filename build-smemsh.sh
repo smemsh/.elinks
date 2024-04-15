@@ -109,6 +109,8 @@ meson configure $opts build || bomb configure
 ninja -C build || bomb build
 set +x
 
-echo "completed."
-echo "to install: sudo ninja -C build install"
-echo "then: sudo cp build/src/mime/backend/mailcap-cache /usr/local/bin/"
+cat << %
+build complete
+install: sudo ninja -C build install
+then: sudo cp build/src/mime/backend/mailcap-cache /usr/local/bin/
+%
