@@ -18,7 +18,8 @@ gpm               false
 terminfo          true
 zstd              true
 brotli            true
-python            true
+#python            true
+python            false
 libevent          false
 libev             false
 no-root           true
