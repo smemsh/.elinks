@@ -25,7 +25,7 @@ libevent          true
 libev             false
 no-root           true
 apidoc            false
-htmldoc           false
+htmldoc           true
 pdfdoc            false
 test-mailcap      true
 
