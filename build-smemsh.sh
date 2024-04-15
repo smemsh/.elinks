@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
 declare -A options=(
 
 # non-defaults from meson_options.txt
@@ -103,6 +102,7 @@ then (
 
 ### elinks ###
 
+set -x
 test -d build && rm -rf build
 meson setup build || bomb setup
 meson configure $opts build || bomb configure
