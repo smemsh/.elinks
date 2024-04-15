@@ -10,25 +10,62 @@ test -f meson_options.txt  || bomb "no meson options file present"
 
 ### libcss ###
 
-# mkdir -p netsurf
-# cd netsurf
-# git clone git://git.netsurf-browser.org/netsurf.git
-#
-test -d netsurf/netsurf || bomb "checkout netsurf to netsurf/netsurf"
+if ! test -d netsurf
+then
+	printf "netsurf dne, cloning..."
 
-# mkdir -p netsurf/nsbuild
-# export TARGET_WORKSPACE=$PWD/netsurf/nsbuild
-# source netsurf/netsurf/docs/env.sh
-# ns-clone
-#
-test -d netsurf/nsbuild || bomb "no nsbuild dir, run ns-clone"
-export TARGET_WORKSPACE=$PWD/netsurf/nsbuild
-source netsurf/netsurf/docs/env.sh
-ns-pull-install
+	set -x
+	mkdir netsurf
+	git -C netsurf clone -q git://git.netsurf-browser.org/netsurf.git
+	set +x
 
-echo sudo cp -uvr netsurf/nsbuild/inst-x86_64-linux-gnu/* /usr/local/
-read -n1 -p 'waiting for key to continue when done...'
-echo
+	echo done
+fi
+
+nsbuilddir=netsurf/nsbuild
+nsnsdir=netsurf/netsurf
+if ! test -d $nsbuilddir
+then (
+	echo "nsbuild dne, cloning libs..."
+
+	set -x
+	mkdir $nsbuilddir
+	export TARGET_WORKSPACE=$PWD/$nsbuilddir
+	source $nsnsdir/docs/env.sh
+	ns-clone
+	set +x
+
+	echo done
+); nsbuild=1
+fi
+
+if ! ((nsbuild))
+then
+	read -s -n1 -p 'update netsurf libs (y/N)? ' r
+	echo $r
+	if [[ ! $r || $r == n ]]; then nsbuild=0
+	elif [[ $r == y ]]; then nsbuild=1
+	else bomb "bad nsbuild yn response"
+	fi
+fi
+
+if ((nsbuild))
+then (
+	echo "updating netsurf build..."
+
+	set -x
+	export TARGET_WORKSPACE=$PWD/$nsbuilddir
+	source $nsnsdir/docs/env.sh
+	ns-pull-install
+	set +x
+
+	cat <<- %
+	build done
+	sudo cp -uvr netsurf/nsbuild/inst-x86_64-linux-gnu/* /usr/local/
+	%
+	read -n1 -p 'waiting for key to continue when done...'
+	echo
+); fi
 
 ### elinks ###
 
