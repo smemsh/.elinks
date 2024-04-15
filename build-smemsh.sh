@@ -5,6 +5,9 @@ set -e
 
 bomb () { echo "meson $@ failed" >&2; false; exit; }
 
+[[ ${PWD##*/} == elinks ]] || bomb "must be in elinks root dir"
+test -f meson_options.txt  || bomb "no meson options file present"
+
 ### libcss ###
 
 # mkdir -p netsurf
