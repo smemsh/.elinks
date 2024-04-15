@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 set -x
+set -e
+
 bomb () { echo "meson $@ failed" >&2; false; exit; }
 
 ### libcss ###
