@@ -70,7 +70,7 @@ then (
 ### elinks ###
 
 test -d build && rm -rf build
-meson setup build || bomb build
+meson setup build || bomb setup
 
 # see meson_options.txt, these are only non-default vaules
 meson configure \
