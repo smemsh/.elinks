@@ -23,6 +23,9 @@ python            true
 libevent          false
 libev             false
 no-root           true
+apidoc            false
+htmldoc           false
+pdfdoc            false
 test-mailcap      true
 
 ###
