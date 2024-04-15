@@ -1,6 +1,37 @@
 #!/usr/bin/env bash
 
 set -x
+declare -A options=(
+
+# non-defaults from meson_options.txt
+#
+prefix            /usr/local
+sysconfdir        /etc/elinks
+ipv6              false
+bittorrent        false
+mouse             false
+88-colors         true
+256-colors        true
+exmode            true
+html-highlight    true
+fastmem           true
+gpm               false
+terminfo          true
+zstd              true
+brotli            true
+python            true
+libevent          false
+libev             false
+no-root           true
+test-mailcap      true
+
+###
+
+); opts=$(
+	for key in "${!options[@]}"
+	do echo "-D $key=${options[$key]}"; done
+)
+
 set -e
 
 bomb () { echo "meson $@ failed" >&2; false; exit; }
@@ -71,32 +102,8 @@ then (
 
 test -d build && rm -rf build
 meson setup build || bomb setup
-
-# see meson_options.txt, these are only non-default vaules
-meson configure \
-	-D prefix=/usr/local \
-	-D sysconfdir=/etc/elinks \
-	-D ipv6=false \
-	-D bittorrent=false \
-	-D mouse=false \
-	-D 88-colors=true \
-	-D 256-colors=true \
-	-D exmode=true \
-	-D html-highlight=true \
-	-D fastmem=true \
-	-D gpm=false \
-	-D terminfo=true \
-	-D zstd=true \
-	-D brotli=true \
-	-D python=true \
-	-D libevent=false \
-	-D libev=false \
-	-D no-root=true \
-	-D test-mailcap=true \
-build || bomb configure
-
-ninja -C build || bomb ninja
-
+meson configure $opts build || bomb configure
+ninja -C build || bomb build
 set +x
 
 echo "completed."
