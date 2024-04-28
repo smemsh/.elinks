@@ -96,7 +96,9 @@ then (
 
 	cat <<- %
 	build done
-	sudo cp -uvr netsurf/nsbuild/inst-x86_64-linux-gnu/* /usr/local/
+	sudo cp -uvr \
+	  netsurf/nsbuild/inst-x86_64-linux-gnu/!(share/netsurf-buildsystem) \
+	  /usr/local/
 	%
 	read -n1 -p 'waiting for key to continue when done...'
 	echo
