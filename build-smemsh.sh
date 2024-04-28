@@ -20,8 +20,7 @@ zstd              true
 brotli            true
 #python            true
 python            false
-#libevent          false
-libevent          true
+libevent          false
 libev             false
 no-root           true
 apidoc            false
